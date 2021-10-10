@@ -1,0 +1,30 @@
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Display:wght@300;400;500;600&display=swap');
+
+/* Vars */
+:root{
+	--dark: #261C2C;
+	--dark-brown: #3E2C41;
+	--dim-blue: #5C527F;
+	--purple: #5C527F;
+}
+
+/* Resets */
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: 'Noto Sans Display', sans-serif;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
