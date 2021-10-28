@@ -10,13 +10,17 @@
 			$user_id = $_SESSION['userID'];
 			$monthNumber = getCurrentMonth();
 
+			$count = 0;
+
 			$sql = "SELECT * FROM `_items` WHERE `user_id` = '$user_id' AND `month` = '$monthNumber' ORDER BY `id` ASC";
 			$res = $db->query($sql);
 			if ($res) {
 				while ($row = $res->fetchArray()) {
 					$response['data'][] = $row;
+					$count++;
 				}
 			}
+			$response['count'] = $count;
 		}
 		else {
 		$response['status'] = false;
@@ -28,4 +32,6 @@
 		$response['msg'] = "Unauthorized!";
 	}
 	echo json_encode($response);
+    $db->close();
+	
 ?>

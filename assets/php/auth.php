@@ -14,16 +14,22 @@ include 'coreFuns.php';
 			$res = $db->query($sql);
 			$row = $res->fetchArray(SQLITE3_ASSOC);
 
-
-			if ($row['username'] == $username && $row['pin'] == $pin) {
-				$_SESSION['loggedIn'] = true;
-				$_SESSION['userID'] = $row['user_id'];
-				$_SESSION['loggedInUser'] = $row['username'];
-				header('location: ../../home.php');
+			if ($row) {
+				if ($row['username'] == $username && $row['pin'] == $pin) {
+					$_SESSION['loggedIn'] = true;
+					$_SESSION['userID'] = $row['user_id'];
+					$_SESSION['loggedInUser'] = $row['username'];
+					header('location: ../../home.php');
+				}
+				else {
+					$_SESSION['loggedIn'] = false;
+					$_SESSION['msg'] = "Invalid PIN!";
+					header('location: ../../index.php');
+				}
 			}
 			else {
 				$_SESSION['loggedIn'] = false;
-				$_SESSION['msg'] = "Invalid PIN!";
+				$_SESSION['msg'] = "Credentials Not Matched!";
 				header('location: ../../index.php');
 			}
 		}

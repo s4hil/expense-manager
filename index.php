@@ -69,14 +69,27 @@
 			<h2 class="header text-center text-white">
 				<span class="bg-danger text-white">Expense Manager</span>
 			</h2>
-			<form class="form" method="POST" action="assets/php/auth.php" autocomplete="off">
+			<?php
+				include 'assets/php/auth.php';
+				if (isset($_SESSION['msg'])) {
+					?>
+						<div class="alert alert-warning mt-3">
+							<?php
+								echo $_SESSION['msg'];
+								unset($_SESSION['msg']);
+							?>
+						</div>
+					<?php
+				}
+			?>
+			<form class="form" method="POST" action="assets/php/auth.php">
 				<fieldset class="form-group">
 					<label for="username">Username</label>
 					<input required type="text" name="username" id="username" class="form-control">
 				</fieldset>
 				<fieldset class="form-group">
 					<label for="pin">PIN</label>
-					<input required type="text" name="PIN" maxlength="6" id="pin" class="form-control">
+					<input required type="password" name="PIN" maxlength="6" id="pin" class="form-control">
 				</fieldset>
 				<fieldset class="form-group">
 					<button name="login" type="submit" class="btn btn-success float-right">Login</button>
@@ -99,3 +112,6 @@
 	</script>
 </body>
 </html>
+<?php
+	
+?>

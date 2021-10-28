@@ -82,6 +82,9 @@
 			padding: 0;
 			margin: 0;
 		}
+		.nav-btn i{
+			color: #fff;
+		}
 	</style>
 </head>
 <body>
@@ -104,18 +107,18 @@
 				<div class="container-fluid d-flex justify-content-center mt-5 row">
 					<div class="col-12 col-xs-12 col-sm-12 col-md-4 col-lg-4">
 						<h2 class="alert alert-info">Add Item</h2>
-						<form class="form">
+						<form class="form add-item-form" autocomplete="off">
 							<fieldset class="form-group">
 								<label>Date</label>
-								<input type="date" id="date" class="form-control">
+								<input type="date" id="date" class="form-control" required>
 							</fieldset>
 							<fieldset class="form-group">
 								<label>Item</label>
-								<input type="text" id="item" class="form-control">
+								<input type="text" id="item" class="form-control" required>
 							</fieldset>
 							<fieldset class="form-group">
 								<label>Price</label>
-								<input type="text" id="price" class="form-control">
+								<input type="text" id="price" class="form-control" required>
 							</fieldset>
 							<fieldset class="form-group">
 								<button class="btn btn-primary" id="add-item"><i class="fas fa-save"></i> Add</button>
@@ -125,7 +128,7 @@
 					</div>
 					<div class="col-12 col-xs-12 col-sm-12 col-md-4 col-lg-8">
 						<h2 class="alert alert-info">Items
-							<span style="font-size: .9rem;">(<?php echo date('d-m-Y'); ?>)</span>
+							<span style="font-size: .9rem;">(<?php echo date('m-Y'); ?>)</span>
 						</h2>
 						<table class="table table-striped">
 							<thead>
@@ -136,7 +139,7 @@
 								</tr>
 							</thead>
 							<tbody id="items-table">
-								<!-- To be populated by js -->
+								
 							</tbody>
 						</table>
 					</div>
@@ -146,21 +149,5 @@
 	</main>
 	<script src="assets/js/jquery.min.js"></script>
 	<script src="assets/js/home.js"></script>
-	<script>
-		
-	// Display Navigation
-	let navState = false;
-	$(".nav-btn").click(()=>{
-		if (navState == false) {
-			$(".side-bar").addClass('show-nav');
-			navState = true;
-		}
-		else {
-			$(".side-bar").removeClass('show-nav');
-			navState = false;
-		}
-	});
-
-	</script>
 </body>
 </html>

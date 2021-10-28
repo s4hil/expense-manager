@@ -1,5 +1,20 @@
 $(document).ready(()=>{
 
+	// Display Navigation
+	let navState = false;
+	$(".nav-btn").click(()=>{
+		if (navState == false) {
+			$(".side-bar").addClass('show-nav');
+			$('.nav-btn').html("<i class='fas fa-times'></i>");
+			navState = true;
+		}
+		else {
+			$(".side-bar").removeClass('show-nav');
+			$('.nav-btn').html("<i class='fas fa-bars'></i>");
+			navState = false;
+		}
+	});
+
 	// Load data on click
 	$("#load-data").click((e)=>{
 		e.preventDefault();

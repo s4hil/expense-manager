@@ -1,3 +1,52 @@
+<?php
+	include 'assets/php/coreFuns.php';
+	
+	
+	// DB Connection
+	class myDB extends SQLITE3
+	{
+		
+		function __construct()
+		{
+			$this->open('assets/php/db.sqlite');
+		}
+	}
+	$db = new myDB();
+
+
+	if (isset($_POST['verifyOTP'])) {
+		$username = strtolower(clean($_POST['username']));
+		$pin = md5(clean($_POST['pin']));
+		$number = clean($_POST['number']);
+		$enteredOTP = clean($_POST['enteredOTP']);
+		if ($enteredOTP == $_SESSION['OTPcode']) {
+			unset($_SESSION['OTPcode']);
+
+			$sql = "INSERT INTO '_users' (`username`, `pin`, `number`) VALUES (
+					'$username',
+					'$pin',
+					'$number'
+				)";
+			$res = $db->exec($sql);
+			if ($res) {
+				?>
+					<script>
+						alert('User Added!');
+						window.location = "index.php"; 
+					</script>
+				<?php
+			}
+			else {
+				?>
+					<script>
+						alert('User Not Added!');
+					</script>
+			<?php
+			}
+		}
+	}
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -74,11 +123,11 @@
 			<form class="form sign-up-form" autocomplete="off" action="?" method="POST">
 				<fieldset class="form-group">
 					<label>Username</label>
-					<input type="text" name="username" class="form-control">
+					<input type="text" name="username" class="form-control" placeholder="Enter Your Username">
 				</fieldset>
 				<fieldset class="form-group">
 					<label>PIN</label>
-					<input type="number" name="pin" class="form-control">
+					<input type="number" name="pin" class="form-control" placeholder="Enter New PIN">
 				</fieldset>
 				<fieldset class="form-group">
 					<label>Mobile Number</label>
@@ -92,65 +141,47 @@
 			<?php
 				// Handle Submission
 				if (isset($_POST['sendOTP'])) {
-					include 'assets/php/coreFuns.php';
 				 	$username = clean($_POST['username']);
 				 	$pin = clean($_POST['pin']);
 				 	$number = clean($_POST['number']);
 
-				 	$otp = rand(1000,9999);
-				 	$_SESSION['OTPcode'] = $otp;
+				 	$dublicateSQL = "SELECT COUNT(*) as count FROM `_users` WHERE `number` = '$number'";
 
-					if (sendOTP($number, $otp) == true) {
-						echo $otp;
-						?>
-							<script>
-								$(".sign-up-form").hide();
-							</script>
-							<form class="form" method="POST" action="?">
-								<fieldset class="form-group">
-									<label>OTP</label>
-									<input type="number" name="enteredOTP" class="form-control">
-								</fieldset>
-								<fieldset class="form-group">
-									<button name="verifyOTP" class="btn btn-success">Verify</button>
-								</fieldset>
-							</form>
-							<?php
+				 	$rows = $db->query($dublicateSQL);
+					$row = $rows->fetchArray();
+					$numRows = $row['count'];
 
-								if (isset($_POST['verifyOTP'])) {
-									$enteredOTP = clean($_POST['enteredOTP']);
-									if ($enteredOTP == $_SESSION['OTPcode']) {
-										unset($_SESSION['OTPcode']);
-										include 'assets/php/config.php';
+					if ($numRows == 0) {
+						$otp = rand(1000,9999);
+				 		$_SESSION['OTPcode'] = $otp;
 
-										$sql = "INSERT INTO `_users` (`username`, `pin`,`number`) VALUES (
-												'$username',
-												'$pin',
-												'$number'
-											)";
-										$res = $db->exec($sql);
-										if ($res) {
-											?>
-												<script>
-													alert('User Added!');
-												</script>
-											<?php
-										}
-										else {
-											?>
-												<script>
-													alert('User Not Added!');
-												</script>
-										<?php
-										}
-									}
-								}
-
+				 		if (sendOTP($number, $otp) == true) {
 							?>
-						<?php
+								<script>
+									$(".sign-up-form").hide();
+								</script>
+								<form class="form" method="POST" action="?">
+									<input hidden name="username" value="<?php echo $username; ?>">
+									<input hidden name="pin" value="<?php echo $pin; ?>">
+									<input hidden name="number" value="<?php echo $number; ?>">
+									<fieldset class="form-group">
+										<label>OTP</label>
+										<input type="number" name="enteredOTP" class="form-control">
+									</fieldset>
+									<fieldset class="form-group">
+										<input type="submit" name="verifyOTP" class="btn btn-success" value="Verify">
+									</fieldset>
+								</form>
+								
+							<?php
+						}
+						else {
+							alertUser("Failed To Send OTP");
+						}
+
 					}
 					else {
-						alertUser("Failed To Send OTP");
+						alertUser("Number is already in use!");
 					}
 					
 				} 

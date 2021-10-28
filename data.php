@@ -82,6 +82,9 @@
 			padding: 0;
 			margin: 0;
 		}
+		.nav-btn i{
+			color: #fff;
+		}
 	</style>
 </head>
 <body>
@@ -210,21 +213,5 @@
 	<script src="assets/js/jquery.min.js"></script>
 	<script src="assets/js/bootstrap.bundle.min.js"></script>
 	<script src="assets/js/data.js"></script>
-	<script>
-		
-	// Display Navigation
-	let navState = false;
-	$(".nav-btn").click(()=>{
-		if (navState == false) {
-			$(".side-bar").addClass('show-nav');
-			navState = true;
-		}
-		else {
-			$(".side-bar").removeClass('show-nav');
-			navState = false;
-		}
-	});
-
-	</script>
 </body>
 </html>

@@ -15,7 +15,8 @@
 			$date = clean($data['date']);
 			$item = ucwords(clean($data['item']));
 			$price = clean($data['price']);
-			$month = getMonthByFullDate($date);
+			// $month = getMonthByFullDate($date);
+			$month = 10;
 			$year = getYearByFullDate($date);
 
 			$sql = "INSERT INTO `_items` (`item_name`,`price`,`month`,`year`,`date`,`user_id`) VALUES(
@@ -42,4 +43,6 @@
 		$response['msg'] = "Unauthorized!";
 	}
 	echo json_encode($response);
+    $db->close();
+	
 ?>
