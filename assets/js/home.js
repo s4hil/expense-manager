@@ -16,7 +16,7 @@ $(document).ready(()=>{
 	});
 
 	// Load items table
-	function loadItemsByMonth(argument) {
+	function loadItemsByMonth() {
 		let output = "";
 		$.ajax({
 			url: "assets/php/api/fetchItemsByMonth.php",

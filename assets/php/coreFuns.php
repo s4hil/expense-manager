@@ -58,5 +58,34 @@ session_start();
         return $arr[0];
     }
 
+    // Verify Old password
+    function verifyOldPw($userId, $oldPw)
+    {
+        global $db;
+        $pw = md5($oldPw);
+        $sql = "SELECT * FROM `_users` WHERE `user_id` = '$userId' AND `pin` = '$pw'";
+        $res = $db->query($sql);
+        if ($res->fetchArray()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    // Set new password
+    function setNewPassword($userId, $pw)
+    {
+        global $db;
+        $pw = md5($pw);
+        $sql = "UPDATE `_users` SET `pin` = '$pw' WHERE `user_id` = '$userId'";
+        $res = $db->exec($sql);
+        if ($res) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
 ?>

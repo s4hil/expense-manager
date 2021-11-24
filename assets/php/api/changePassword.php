@@ -11,25 +11,25 @@
 			// Code goes here 
 			$data = json_decode(file_get_contents("php://input"), true);
 
-			// Sanitize Input
-			$date = clean($data['date']);
-			$item = ucwords(clean($data['item']));
-			$price = clean($data['price']);
-			$month = getMonthByFullDate($date);
-			$year = getYearByFullDate($date);
+			$oldPw = $data['oldPw'];
+			$newPw = $data['newPw'];
 
-			$sql = "INSERT INTO `_items` (`item_name`,`price`,`month`,`year`,`date`,`user_id`) VALUES(
-					'$item',
-					'$price',
-					'$month',
-					'$year',
-					'$date',
-					'$user_id'
-					)";
-			$res = $db->exec($sql);
-			if ($res) {
-				$response['status'] = true;
-				$response['msg'] = "Item Added!";
+			// $oldPw = "12345678";
+			// $newPw = "1234";
+
+			if (verifyOldPw($user_id, $oldPw) == true) {
+				if (setNewPassword($user_id, $newPw) == true) {
+					$response['status'] = true;
+					$response['msg'] = "Password Changed Successfully!";
+				}
+				else{
+					$response['status'] = false;
+					$response['msg'] = "Failed To Set Old Password!";
+				}
+			}
+			else {
+				$response['status'] = false;
+				$response['msg'] = "Incorrect Old Password!";
 			}
 		}
 		else {
@@ -42,6 +42,4 @@
 		$response['msg'] = "Unauthorized!";
 	}
 	echo json_encode($response);
-    $db->close();
-	
 ?>
